@@ -98,13 +98,23 @@ impl Verifier for FreeKittyVerifier {
     }
 }
 
+pub trait KittyConfigTrait {
+    type Money;
+    type MoneyVerifier;
+}
+
+pub struct KittyConfig;
+impl KittyConfigTrait for KittyConfig {
+    type Money = Coin;
+    type MoneyVerifier = MoneyVerifier;
+}
 #[cfg_attr(
     feature = "std",
     derive(Serialize, Deserialize, parity_util_mem::MallocSizeOf)
 )]
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Encode, Decode, Hash, Debug, TypeInfo)]
-pub struct MoneyKittyVerifier;
-impl Verifier for MoneyKittyVerifier {
+pub struct MoneyKittyVerifier<Config>;
+impl<Config: KittyConfigTrait> Verifier for MoneyKittyVerifier<Config> {
     type Error = VerifierError;
     fn verify(
         &self,
@@ -117,11 +127,10 @@ impl Verifier for MoneyKittyVerifier {
             input_data.len() >= 2,
             Self::Error::MinimumSpendAndBreedNotMet,
         );
-        // let money = input_data[0]
-        //     .extract::<Coin>()
-        //     .map_err(|_| Self::Error::BadlyTyped)
-        //     .0;
-        // MoneyVerifier::verify()
+        MoneyVerifier::verify(&MoneyVerifier::Spend, &input_data[0], &output_money[0])?;
+
+        // <Config as MoneyVerifier>::verify(&Config::MoneyVerifier::Spend)
+        // TODO: now check if the money is enough and maybe address is correct?
         Ok(0)
     }
 }
