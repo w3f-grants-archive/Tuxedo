@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["fetch_storage","node_get_block","node_get_block_hash"]};

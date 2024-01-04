@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `wallet/src/money.rs`."><title>money.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tuxedo_template_wallet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (db0cbc48d 2023-03-26)" data-search-js="search-0db6af764fd5e08b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../tuxedo_template_wallet/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `wallet/src/money.rs`."><title>money.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-bf502f66ec635d5d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tuxedo_template_wallet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (e51e98dde 2023-12-31)" data-channel="nightly" data-search-js="search-c17e98913a53b3b7.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../tuxedo_template_wallet/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -140,11 +142,32 @@
 <a href="#140" id="140">140</a>
 <a href="#141" id="141">141</a>
 <a href="#142" id="142">142</a>
-</pre><pre class="rust"><code><span class="doccomment">//! Wallet features related to spending money and checking balances.
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! Wallet features related to spending money and checking balances.
 
-</span><span class="kw">use crate</span>::{fetch_storage, SpendArgs, KEY_TYPE};
-
-<span class="kw">use </span>std::{thread::sleep, time::Duration};
+</span><span class="kw">use crate</span>::{cli::SpendArgs, rpc::fetch_storage, sync};
 
 <span class="kw">use </span>anyhow::anyhow;
 <span class="kw">use </span>jsonrpsee::{core::client::ClientT, http_client::HttpClient, rpc_params};
@@ -154,47 +177,77 @@
     OuterConstraintChecker, OuterVerifier, Transaction,
 };
 <span class="kw">use </span>sc_keystore::LocalKeystore;
+<span class="kw">use </span>sled::Db;
 <span class="kw">use </span>sp_core::sr25519::Public;
-<span class="kw">use </span>sp_keystore::CryptoStore;
 <span class="kw">use </span>sp_runtime::traits::{BlakeTwo256, Hash};
 <span class="kw">use </span>tuxedo_core::{
     types::{Input, Output, OutputRef},
-    verifier::SigCheck,
+    verifier::Sr25519Signature,
 };
 
 <span class="doccomment">/// Create and send a transaction that spends coins on the network
 </span><span class="kw">pub async fn </span>spend_coins(
+    db: <span class="kw-2">&amp;</span>Db,
     client: <span class="kw-2">&amp;</span>HttpClient,
     keystore: <span class="kw-2">&amp;</span>LocalKeystore,
     args: SpendArgs,
 ) -&gt; anyhow::Result&lt;()&gt; {
-    <span class="macro">println!</span>(<span class="string">&quot;The args are:: {:?}&quot;</span>, args);
+    <span class="macro">log::debug!</span>(<span class="string">"The args are:: {:?}"</span>, args);
 
     <span class="comment">// Construct a template Transaction to push coins into later
     </span><span class="kw">let </span><span class="kw-2">mut </span>transaction = Transaction {
         inputs: Vec::new(),
+        peeks: Vec::new(),
         outputs: Vec::new(),
         checker: OuterConstraintChecker::Money(MoneyConstraintChecker::Spend),
     };
 
-    <span class="comment">// Make sure each input decodes and is present in storage, and then push to transaction.
-    </span><span class="kw">for </span>output_ref <span class="kw">in </span><span class="kw-2">&amp;</span>args.input {
-        print_coin_from_storage(output_ref, client).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="comment">// Construct each output and then push to the transactions
+    </span><span class="kw">let </span><span class="kw-2">mut </span>total_output_amount = <span class="number">0</span>;
+    <span class="kw">for </span>amount <span class="kw">in </span><span class="kw-2">&amp;</span>args.output_amount {
+        <span class="kw">let </span>output = Output {
+            payload: Coin::&lt;<span class="number">0</span>&gt;::new(<span class="kw-2">*</span>amount).into(),
+            verifier: OuterVerifier::Sr25519Signature(Sr25519Signature {
+                owner_pubkey: args.recipient,
+            }),
+        };
+        total_output_amount += amount;
+        transaction.outputs.push(output);
+    }
+
+    <span class="comment">// The total input set will consist of any manually chosen inputs
+    // plus any automatically chosen to make the input amount high enough
+    </span><span class="kw">let </span><span class="kw-2">mut </span>total_input_amount = <span class="number">0</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>all_input_refs = args.input;
+    <span class="kw">for </span>output_ref <span class="kw">in </span><span class="kw-2">&amp;</span>all_input_refs {
+        <span class="kw">let </span>(_owner_pubkey, amount) = sync::get_unspent(db, output_ref)<span class="question-mark">?</span>.ok_or(<span class="macro">anyhow!</span>(
+            <span class="string">"user-specified output ref not found in local database"
+        </span>))<span class="question-mark">?</span>;
+        total_input_amount += amount;
+    }
+    <span class="comment">//TODO filtering on a specific sender
+
+    // If the supplied inputs are not valuable enough to cover the output amount
+    // we select the rest arbitrarily from the local db. (In many cases, this will be all the inputs.)
+    </span><span class="kw">if </span>total_input_amount &lt; total_output_amount {
+        <span class="kw">match </span>sync::get_arbitrary_unspent_set(db, total_output_amount - total_input_amount)<span class="question-mark">? </span>{
+            <span class="prelude-val">Some</span>(more_inputs) =&gt; {
+                all_input_refs.extend(more_inputs);
+            }
+            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow!</span>(
+                <span class="string">"Not enough value in database to construct transaction"
+            </span>))<span class="question-mark">?</span>,
+        }
+    }
+
+    <span class="comment">// Make sure each input decodes and is still present in the node's storage,
+    // and then push to transaction.
+    </span><span class="kw">for </span>output_ref <span class="kw">in </span><span class="kw-2">&amp;</span>all_input_refs {
+        get_coin_from_storage(output_ref, client).<span class="kw">await</span><span class="question-mark">?</span>;
         transaction.inputs.push(Input {
             output_ref: output_ref.clone(),
             redeemer: <span class="macro">vec!</span>[], <span class="comment">// We will sign the total transaction so this should be empty
         </span>});
-    }
-
-    <span class="comment">// Construct each output and then push to the transactions
-    </span><span class="kw">for </span>amount <span class="kw">in </span><span class="kw-2">&amp;</span>args.output_amount {
-        <span class="kw">let </span>output = Output {
-            payload: Coin::new(<span class="kw-2">*</span>amount).into(),
-            verifier: OuterVerifier::SigCheck(SigCheck {
-                owner_pubkey: args.recipient,
-            }),
-        };
-        transaction.outputs.push(output);
     }
 
     <span class="comment">// Keep a copy of the stripped encoded transaction for signing purposes
@@ -207,12 +260,9 @@
 
         <span class="comment">// Construct the proof that it can be consumed
         </span><span class="kw">let </span>redeemer = <span class="kw">match </span>utxo.verifier {
-            OuterVerifier::SigCheck(SigCheck { owner_pubkey }) =&gt; {
+            OuterVerifier::Sr25519Signature(Sr25519Signature { owner_pubkey }) =&gt; {
                 <span class="kw">let </span>public = Public::from_h256(owner_pubkey);
-                keystore
-                    .sign_with(KEY_TYPE, <span class="kw-2">&amp;</span>public.into(), <span class="kw-2">&amp;</span>stripped_encoded_transaction)
-                    .<span class="kw">await</span><span class="question-mark">?
-                    </span>.ok_or(<span class="macro">anyhow!</span>(<span class="string">&quot;Key doesn&#39;t exist in keystore&quot;</span>))<span class="question-mark">?
+                <span class="kw">crate</span>::keystore::sign_with(keystore, <span class="kw-2">&amp;</span>public, <span class="kw-2">&amp;</span>stripped_encoded_transaction)<span class="question-mark">?
             </span>}
             OuterVerifier::UpForGrabs(<span class="kw">_</span>) =&gt; Vec::new(),
             OuterVerifier::ThresholdMultiSignature(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
@@ -226,60 +276,58 @@
     </span><span class="kw">let </span>genesis_spend_hex = hex::encode(transaction.encode());
     <span class="kw">let </span>params = <span class="macro">rpc_params!</span>[genesis_spend_hex];
     <span class="kw">let </span>genesis_spend_response: <span class="prelude-ty">Result</span>&lt;String, <span class="kw">_</span>&gt; =
-        client.request(<span class="string">&quot;author_submitExtrinsic&quot;</span>, params).<span class="kw">await</span>;
-    <span class="macro">println!</span>(
-        <span class="string">&quot;Node&#39;s response to spend transaction: {:?}&quot;</span>,
+        client.request(<span class="string">"author_submitExtrinsic"</span>, params).<span class="kw">await</span>;
+    <span class="macro">log::info!</span>(
+        <span class="string">"Node's response to spend transaction: {:?}"</span>,
         genesis_spend_response
     );
 
-    <span class="comment">// Wait a few seconds to make sure a block has been authored.
-    </span>sleep(Duration::from_secs(<span class="number">3</span>));
-
-    <span class="comment">// Retrieve new coins from storage
-    </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..transaction.outputs.len() {
+    <span class="comment">// Print new output refs for user to check later
+    </span><span class="kw">let </span>tx_hash = &lt;BlakeTwo256 <span class="kw">as </span>Hash&gt;::hash_of(<span class="kw-2">&amp;</span>transaction.encode());
+    <span class="kw">for </span>(i, output) <span class="kw">in </span>transaction.outputs.iter().enumerate() {
         <span class="kw">let </span>new_coin_ref = OutputRef {
-            tx_hash: &lt;BlakeTwo256 <span class="kw">as </span>Hash&gt;::hash_of(<span class="kw-2">&amp;</span>transaction.encode()),
+            tx_hash,
             index: i <span class="kw">as </span>u32,
         };
+        <span class="kw">let </span>amount = output.payload.extract::&lt;Coin&lt;<span class="number">0</span>&gt;&gt;()<span class="question-mark">?</span>.<span class="number">0</span>;
 
-        print_coin_from_storage(<span class="kw-2">&amp;</span>new_coin_ref, client).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="macro">print!</span>(
+            <span class="string">"Created {:?} worth {amount}. "</span>,
+            hex::encode(new_coin_ref.encode())
+        );
+        <span class="kw">crate</span>::pretty_print_verifier(<span class="kw-2">&amp;</span>output.verifier);
     }
 
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="doccomment">/// Pretty print the details of a coin in storage given the OutputRef
-</span><span class="kw">pub async fn </span>print_coin_from_storage(
+<span class="doccomment">/// Given an output ref, fetch the details about this coin from the node's
+/// storage.
+</span><span class="kw">pub async fn </span>get_coin_from_storage(
     output_ref: <span class="kw-2">&amp;</span>OutputRef,
     client: <span class="kw-2">&amp;</span>HttpClient,
-) -&gt; anyhow::Result&lt;()&gt; {
+) -&gt; anyhow::Result&lt;(Coin&lt;<span class="number">0</span>&gt;, OuterVerifier)&gt; {
     <span class="kw">let </span>utxo = fetch_storage::&lt;OuterVerifier&gt;(output_ref, client).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="kw">let </span>coin_in_storage: Coin = utxo.payload.extract()<span class="question-mark">?</span>;
+    <span class="kw">let </span>coin_in_storage: Coin&lt;<span class="number">0</span>&gt; = utxo.payload.extract()<span class="question-mark">?</span>;
 
-    <span class="macro">print!</span>(
-        <span class="string">&quot;{}: Found coin worth {:?} units &quot;</span>,
-        hex::encode(output_ref.encode()),
-        coin_in_storage.<span class="number">0
-    </span>);
+    <span class="prelude-val">Ok</span>((coin_in_storage, utxo.verifier))
+}
 
-    <span class="kw">match </span>utxo.verifier {
-        OuterVerifier::SigCheck(sig_check) =&gt; {
-            <span class="macro">println! </span>{<span class="string">&quot;owned by 0x{}&quot;</span>, hex::encode(sig_check.owner_pubkey)}
+<span class="doccomment">/// Apply a transaction to the local database, storing the new coins.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>apply_transaction(
+    db: <span class="kw-2">&amp;</span>Db,
+    tx_hash: &lt;BlakeTwo256 <span class="kw">as </span>Hash&gt;::Output,
+    index: u32,
+    output: <span class="kw-2">&amp;</span>Output&lt;OuterVerifier&gt;,
+) -&gt; anyhow::Result&lt;()&gt; {
+    <span class="kw">let </span>amount = output.payload.extract::&lt;Coin&lt;<span class="number">0</span>&gt;&gt;()<span class="question-mark">?</span>.<span class="number">0</span>;
+    <span class="kw">let </span>output_ref = OutputRef { tx_hash, index };
+    <span class="kw">match </span>output.verifier {
+        OuterVerifier::Sr25519Signature(Sr25519Signature { owner_pubkey }) =&gt; {
+            <span class="comment">// Add it to the global unspent_outputs table
+            </span><span class="kw">crate</span>::sync::add_unspent_output(db, <span class="kw-2">&amp;</span>output_ref, <span class="kw-2">&amp;</span>owner_pubkey, <span class="kw-2">&amp;</span>amount)
         }
-        OuterVerifier::UpForGrabs(<span class="kw">_</span>) =&gt; <span class="macro">println!</span>(<span class="string">&quot;that can be spent by anyone&quot;</span>),
-        OuterVerifier::ThresholdMultiSignature(multi_sig) =&gt; {
-            <span class="kw">let </span>string_sigs: Vec&lt;<span class="kw">_</span>&gt; = multi_sig
-                .signatories
-                .iter()
-                .map(|sig| <span class="macro">format!</span>(<span class="string">&quot;0x{}&quot;</span>, hex::encode(sig)))
-                .collect();
-            <span class="macro">println!</span>(
-                <span class="string">&quot;Owned by {:?}, with a threshold of {} sigs necessary&quot;</span>,
-                string_sigs, multi_sig.threshold
-            );
-        }
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow!</span>(<span class="string">"{:?}"</span>, ())),
     }
-
-    <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div></section></main></body></html>

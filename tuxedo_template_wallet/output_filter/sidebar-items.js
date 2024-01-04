@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["tests"],"struct":["Sr25519SignatureFilter"],"trait":["OutputFilter"],"type":["Filter","OutputInfo","TxHash"]};

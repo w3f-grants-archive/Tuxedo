@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `wallet/src/amoeba.rs`."><title>amoeba.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tuxedo_template_wallet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (db0cbc48d 2023-03-26)" data-search-js="search-0db6af764fd5e08b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../tuxedo_template_wallet/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `wallet/src/amoeba.rs`."><title>amoeba.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-bf502f66ec635d5d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tuxedo_template_wallet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (e51e98dde 2023-12-31)" data-channel="nightly" data-search-js="search-c17e98913a53b3b7.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../tuxedo_template_wallet/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -123,9 +125,11 @@
 <a href="#123" id="123">123</a>
 <a href="#124" id="124">124</a>
 <a href="#125" id="125">125</a>
-</pre><pre class="rust"><code><span class="doccomment">//! Toy off-chain process to create an amoeba and perform mitosis on it
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! Toy off-chain process to create an amoeba and perform mitosis on it
 
-</span><span class="kw">use </span><span class="kw">crate</span>::fetch_storage;
+</span><span class="kw">use </span><span class="kw">crate</span>::rpc::fetch_storage;
 
 <span class="kw">use </span>std::{thread::sleep, time::Duration};
 
@@ -145,10 +149,11 @@
     <span class="comment">// Construct a simple amoeba spawning transaction (no signature required)
     </span><span class="kw">let </span>eve = AmoebaDetails {
         generation: <span class="number">0</span>,
-        four_bytes: <span class="kw-2">*</span><span class="string">b&quot;eve_&quot;</span>,
+        four_bytes: <span class="kw-2">*</span><span class="string">b"eve_"</span>,
     };
     <span class="kw">let </span>spawn_tx = Transaction {
         inputs: Vec::new(),
+        peeks: Vec::new(),
         outputs: <span class="macro">vec!</span>[Output {
             payload: eve.into(),
             verifier: UpForGrabs.into(),
@@ -165,8 +170,8 @@
     <span class="comment">// Send the transaction
     </span><span class="kw">let </span>spawn_hex = hex::encode(spawn_tx.encode());
     <span class="kw">let </span>params = <span class="macro">rpc_params!</span>[spawn_hex];
-    <span class="kw">let </span>spawn_response: <span class="prelude-ty">Result</span>&lt;String, <span class="kw">_</span>&gt; = client.request(<span class="string">&quot;author_submitExtrinsic&quot;</span>, params).<span class="kw">await</span>;
-    <span class="macro">println!</span>(<span class="string">&quot;Node&#39;s response to spawn transaction: {:?}&quot;</span>, spawn_response);
+    <span class="kw">let </span>spawn_response: <span class="prelude-ty">Result</span>&lt;String, <span class="kw">_</span>&gt; = client.request(<span class="string">"author_submitExtrinsic"</span>, params).<span class="kw">await</span>;
+    <span class="macro">println!</span>(<span class="string">"Node's response to spawn transaction: {:?}"</span>, spawn_response);
 
     <span class="comment">// Wait a few seconds to make sure a block has been authored.
     </span>sleep(Duration::from_secs(<span class="number">3</span>));
@@ -176,22 +181,23 @@
         .<span class="kw">await</span><span class="question-mark">?
         </span>.payload
         .extract()<span class="question-mark">?</span>;
-    <span class="macro">println!</span>(<span class="string">&quot;Eve Amoeba retrieved from storage: {:?}&quot;</span>, eve_from_storage);
+    <span class="macro">println!</span>(<span class="string">"Eve Amoeba retrieved from storage: {:?}"</span>, eve_from_storage);
 
     <span class="comment">// Create a mitosis transaction on the Eve amoeba
     </span><span class="kw">let </span>cain = AmoebaDetails {
         generation: <span class="number">1</span>,
-        four_bytes: <span class="kw-2">*</span><span class="string">b&quot;cain&quot;</span>,
+        four_bytes: <span class="kw-2">*</span><span class="string">b"cain"</span>,
     };
     <span class="kw">let </span>able = AmoebaDetails {
         generation: <span class="number">1</span>,
-        four_bytes: <span class="kw-2">*</span><span class="string">b&quot;able&quot;</span>,
+        four_bytes: <span class="kw-2">*</span><span class="string">b"able"</span>,
     };
     <span class="kw">let </span>mitosis_tx = Transaction {
         inputs: <span class="macro">vec!</span>[Input {
             output_ref: eve_ref,
             redeemer: Vec::new(),
         }],
+        peeks: Vec::new(),
         outputs: <span class="macro">vec!</span>[
             Output {
                 payload: cain.into(),
@@ -219,9 +225,9 @@
     </span><span class="kw">let </span>mitosis_hex = hex::encode(mitosis_tx.encode());
     <span class="kw">let </span>params = <span class="macro">rpc_params!</span>[mitosis_hex];
     <span class="kw">let </span>mitosis_response: <span class="prelude-ty">Result</span>&lt;String, <span class="kw">_</span>&gt; =
-        client.request(<span class="string">&quot;author_submitExtrinsic&quot;</span>, params).<span class="kw">await</span>;
+        client.request(<span class="string">"author_submitExtrinsic"</span>, params).<span class="kw">await</span>;
     <span class="macro">println!</span>(
-        <span class="string">&quot;Node&#39;s response to mitosis transaction: {:?}&quot;</span>,
+        <span class="string">"Node's response to mitosis transaction: {:?}"</span>,
         mitosis_response
     );
 
@@ -234,7 +240,7 @@
         </span>.payload
         .extract()<span class="question-mark">?</span>;
     <span class="macro">println!</span>(
-        <span class="string">&quot;Cain Amoeba retrieved from storage: {:?}&quot;</span>,
+        <span class="string">"Cain Amoeba retrieved from storage: {:?}"</span>,
         cain_from_storage
     );
     <span class="kw">let </span>able_from_storage: AmoebaDetails = fetch_storage::&lt;OuterVerifier&gt;(<span class="kw-2">&amp;</span>able_ref, client)
@@ -242,7 +248,7 @@
         </span>.payload
         .extract()<span class="question-mark">?</span>;
     <span class="macro">println!</span>(
-        <span class="string">&quot;Able Amoeba retrieved from storage: {:?}&quot;</span>,
+        <span class="string">"Able Amoeba retrieved from storage: {:?}"</span>,
         able_from_storage
     );
 

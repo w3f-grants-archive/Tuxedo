@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `node/src/service.rs`."><title>service.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="node_template" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (db0cbc48d 2023-03-26)" data-search-js="search-0db6af764fd5e08b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../node_template/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `node/src/service.rs`."><title>service.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-bf502f66ec635d5d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="node_template" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (e51e98dde 2023-12-31)" data-channel="nightly" data-search-js="search-c17e98913a53b3b7.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../node_template/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -343,17 +345,7 @@
 <a href="#343" id="343">343</a>
 <a href="#344" id="344">344</a>
 <a href="#345" id="345">345</a>
-<a href="#346" id="346">346</a>
-<a href="#347" id="347">347</a>
-<a href="#348" id="348">348</a>
-<a href="#349" id="349">349</a>
-<a href="#350" id="350">350</a>
-<a href="#351" id="351">351</a>
-<a href="#352" id="352">352</a>
-<a href="#353" id="353">353</a>
-<a href="#354" id="354">354</a>
-<a href="#355" id="355">355</a>
-</pre><pre class="rust"><code><span class="doccomment">//! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
+</pre></div><pre class="rust"><code><span class="doccomment">//! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::rpc;
 <span class="kw">use </span>node_template_runtime::{<span class="self">self</span>, opaque::Block, RuntimeApi};
@@ -361,11 +353,12 @@
 <span class="kw">use </span>sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
 <span class="kw">use </span>sc_consensus_grandpa::SharedVoterState;
 <span class="kw">pub use </span>sc_executor::NativeElseWasmExecutor;
-<span class="kw">use </span>sc_keystore::LocalKeystore;
 <span class="kw">use </span>sc_service::{error::Error <span class="kw">as </span>ServiceError, Configuration, TaskManager, WarpSyncParams};
 <span class="kw">use </span>sc_telemetry::{Telemetry, TelemetryWorker};
+<span class="kw">use </span>sc_transaction_pool_api::OffchainTransactionPoolFactory;
 <span class="kw">use </span>sp_consensus_aura::sr25519::AuthorityPair <span class="kw">as </span>AuraPair;
 <span class="kw">use </span>std::{sync::Arc, time::Duration};
+<span class="kw">use </span>tuxedo_core::genesis::TuxedoGenesisBlockBuilder;
 
 <span class="comment">// Our native executor instance.
 </span><span class="kw">pub struct </span>ExecutorDispatch;
@@ -387,6 +380,10 @@
 <span class="kw">type </span>FullBackend = sc_service::TFullBackend&lt;Block&gt;;
 <span class="kw">type </span>FullSelectChain = sc_consensus::LongestChain&lt;FullBackend, Block&gt;;
 
+<span class="doccomment">/// The minimum period of blocks on which justifications will be
+/// imported and generated.
+</span><span class="kw">const </span>GRANDPA_JUSTIFICATION_PERIOD: u32 = <span class="number">512</span>;
+
 <span class="attr">#[allow(clippy::type_complexity)]
 </span><span class="kw">pub fn </span>new_partial(
     config: <span class="kw-2">&amp;</span>Configuration,
@@ -395,7 +392,7 @@
         FullClient,
         FullBackend,
         FullSelectChain,
-        sc_consensus::DefaultImportQueue&lt;Block, FullClient&gt;,
+        sc_consensus::DefaultImportQueue&lt;Block&gt;,
         sc_transaction_pool::FullPool&lt;Block, FullClient&gt;,
         (
             sc_consensus_grandpa::GrandpaBlockImport&lt;
@@ -410,12 +407,6 @@
     &gt;,
     ServiceError,
 &gt; {
-    <span class="kw">if </span>config.keystore_remote.is_some() {
-        <span class="kw">return </span><span class="prelude-val">Err</span>(ServiceError::Other(
-            <span class="string">&quot;Remote Keystores are not supported.&quot;</span>.into(),
-        ));
-    }
-
     <span class="kw">let </span>telemetry = config
         .telemetry_endpoints
         .clone()
@@ -427,25 +418,30 @@
         })
         .transpose()<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>executor = NativeElseWasmExecutor::&lt;ExecutorDispatch&gt;::new(
-        config.wasm_method,
-        config.default_heap_pages,
-        config.max_runtime_instances,
-        config.runtime_cache_size,
-    );
+    <span class="kw">let </span>executor = sc_service::new_native_or_wasm_executor(config);
+
+    <span class="kw">let </span>backend = sc_service::new_db_backend(config.db_config())<span class="question-mark">?</span>;
+    <span class="kw">let </span>genesis_block_builder = TuxedoGenesisBlockBuilder::new(
+        config.chain_spec.as_storage_builder(),
+        !config.no_genesis(),
+        backend.clone(),
+        executor.clone(),
+    )<span class="question-mark">?</span>;
 
     <span class="kw">let </span>(client, backend, keystore_container, task_manager) =
-        sc_service::new_full_parts::&lt;Block, RuntimeApi, <span class="kw">_</span>&gt;(
+        sc_service::new_full_parts_with_genesis_builder::&lt;Block, RuntimeApi, <span class="kw">_</span>, <span class="kw">_</span>&gt;(
             config,
             telemetry.as_ref().map(|(<span class="kw">_</span>, telemetry)| telemetry.handle()),
             executor,
+            backend,
+            genesis_block_builder,
         )<span class="question-mark">?</span>;
     <span class="kw">let </span>client = Arc::new(client);
 
     <span class="kw">let </span>telemetry = telemetry.map(|(worker, telemetry)| {
         task_manager
             .spawn_handle()
-            .spawn(<span class="string">&quot;telemetry&quot;</span>, <span class="prelude-val">None</span>, worker.run());
+            .spawn(<span class="string">"telemetry"</span>, <span class="prelude-val">None</span>, worker.run());
         telemetry
     });
 
@@ -461,6 +457,7 @@
 
     <span class="kw">let </span>(grandpa_block_import, grandpa_link) = sc_consensus_grandpa::block_import(
         client.clone(),
+        GRANDPA_JUSTIFICATION_PERIOD,
         <span class="kw-2">&amp;</span>Arc::clone(<span class="kw-2">&amp;</span>client),
         select_chain.clone(),
         telemetry.as_ref().map(|x| x.handle()),
@@ -503,78 +500,52 @@
     })
 }
 
-<span class="kw">fn </span>remote_keystore(_url: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;LocalKeystore&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
-    <span class="comment">// FIXME: here would the concrete keystore be built,
-    //        must return a concrete type (NOT `LocalKeystore`) that
-    //        implements `CryptoStore` and `SyncCryptoStore`
-    </span><span class="prelude-val">Err</span>(<span class="string">&quot;Remote Keystore not supported.&quot;</span>)
-}
-
 <span class="doccomment">/// Builds a new service for a full client.
-</span><span class="kw">pub fn </span>new_full(<span class="kw-2">mut </span>config: Configuration) -&gt; <span class="prelude-ty">Result</span>&lt;TaskManager, ServiceError&gt; {
+</span><span class="kw">pub fn </span>new_full(config: Configuration) -&gt; <span class="prelude-ty">Result</span>&lt;TaskManager, ServiceError&gt; {
     <span class="kw">let </span>sc_service::PartialComponents {
         client,
         backend,
         <span class="kw-2">mut </span>task_manager,
         import_queue,
-        <span class="kw-2">mut </span>keystore_container,
+        keystore_container,
         select_chain,
         transaction_pool,
         other: (block_import, grandpa_link, <span class="kw-2">mut </span>telemetry),
     } = new_partial(<span class="kw-2">&amp;</span>config)<span class="question-mark">?</span>;
 
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(url) = <span class="kw-2">&amp;</span>config.keystore_remote {
-        <span class="kw">match </span>remote_keystore(url) {
-            <span class="prelude-val">Ok</span>(k) =&gt; keystore_container.set_remote_keystore(k),
-            <span class="prelude-val">Err</span>(e) =&gt; {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(ServiceError::Other(<span class="macro">format!</span>(
-                    <span class="string">&quot;Error hooking up remote keystore for {}: {}&quot;</span>,
-                    url, e
-                )))
-            }
-        };
-    }
+    <span class="kw">let </span><span class="kw-2">mut </span>net_config = sc_network::config::FullNetworkConfiguration::new(<span class="kw-2">&amp;</span>config.network);
 
     <span class="kw">let </span>grandpa_protocol_name = sc_consensus_grandpa::protocol_standard_name(
         <span class="kw-2">&amp;</span>client
             .block_hash(<span class="number">0</span>)
             .ok()
             .flatten()
-            .expect(<span class="string">&quot;Genesis block exists; qed&quot;</span>),
+            .expect(<span class="string">"Genesis block exists; qed"</span>),
         <span class="kw-2">&amp;</span>config.chain_spec,
     );
 
-    config
-        .network
-        .extra_sets
-        .push(sc_consensus_grandpa::grandpa_peers_set_config(
-            grandpa_protocol_name.clone(),
-        ));
+    net_config.add_notification_protocol(sc_consensus_grandpa::grandpa_peers_set_config(
+        grandpa_protocol_name.clone(),
+    ));
+
     <span class="kw">let </span>warp_sync = Arc::new(sc_consensus_grandpa::warp_proof::NetworkProvider::new(
         backend.clone(),
         grandpa_link.shared_authority_set().clone(),
         Vec::default(),
     ));
 
-    <span class="kw">let </span>(network, system_rpc_tx, tx_handler_controller, network_starter) =
+    <span class="kw">let </span>(network, system_rpc_tx, tx_handler_controller, network_starter, sync_service) =
         sc_service::build_network(sc_service::BuildNetworkParams {
             config: <span class="kw-2">&amp;</span>config,
+            net_config,
             client: client.clone(),
             transaction_pool: transaction_pool.clone(),
             spawn_handle: task_manager.spawn_handle(),
             import_queue,
             block_announce_validator_builder: <span class="prelude-val">None</span>,
             warp_sync_params: <span class="prelude-val">Some</span>(WarpSyncParams::WithProvider(warp_sync)),
+            block_relay: <span class="prelude-val">None</span>,
         })<span class="question-mark">?</span>;
-
-    <span class="kw">if </span>config.offchain_worker.enabled {
-        sc_service::build_offchain_workers(
-            <span class="kw-2">&amp;</span>config,
-            task_manager.spawn_handle(),
-            client.clone(),
-            network.clone(),
-        );
-    }
 
     <span class="kw">let </span>role = config.role.clone();
     <span class="kw">let </span>force_authoring = config.force_authoring;
@@ -600,13 +571,14 @@
     <span class="kw">let </span>_rpc_handlers = sc_service::spawn_tasks(sc_service::SpawnTasksParams {
         network: network.clone(),
         client: client.clone(),
-        keystore: keystore_container.sync_keystore(),
+        keystore: keystore_container.keystore(),
         task_manager: <span class="kw-2">&amp;mut </span>task_manager,
         transaction_pool: transaction_pool.clone(),
         rpc_builder: rpc_extensions_builder,
         backend,
         system_rpc_tx,
         tx_handler_controller,
+        sync_service: sync_service.clone(),
         config,
         telemetry: telemetry.as_mut(),
     })<span class="question-mark">?</span>;
@@ -615,12 +587,13 @@
         <span class="kw">let </span>proposer_factory = sc_basic_authorship::ProposerFactory::new(
             task_manager.spawn_handle(),
             client.clone(),
-            transaction_pool,
+            transaction_pool.clone(),
             prometheus_registry.as_ref(),
             telemetry.as_ref().map(|x| x.handle()),
         );
 
         <span class="kw">let </span>slot_duration = sc_consensus_aura::slot_duration(<span class="kw-2">&amp;*</span>client)<span class="question-mark">?</span>;
+        <span class="kw">let </span>client_for_cidp = client.clone();
 
         <span class="kw">let </span>aura = sc_consensus_aura::start_aura::&lt;AuraPair, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>&gt;(
             StartAuraParams {
@@ -629,22 +602,32 @@
                 select_chain,
                 block_import,
                 proposer_factory,
-                create_inherent_data_providers: <span class="kw">move </span>|<span class="kw">_</span>, ()| <span class="kw">async move </span>{
-                    <span class="kw">let </span>timestamp = sp_timestamp::InherentDataProvider::from_system_time();
+                create_inherent_data_providers: <span class="kw">move </span>|parent_hash, ()| {
+                    <span class="kw">let </span>maybe_parent_block = client_for_cidp.clone().block(parent_hash);
 
-                    <span class="kw">let </span>slot =
-						sp_consensus_aura::inherents::InherentDataProvider::from_timestamp_and_slot_duration(
-							<span class="kw-2">*</span>timestamp,
-							slot_duration,
-						);
+                    <span class="kw">async move </span>{
+                        <span class="kw">let </span>parent_block = maybe_parent_block<span class="question-mark">?
+                            </span>.ok_or(sp_blockchain::Error::UnknownBlock(parent_hash.to_string()))<span class="question-mark">?
+                            </span>.block;
 
-                    <span class="prelude-val">Ok</span>((slot, timestamp))
+                        <span class="kw">let </span>parent_idp =
+                            tuxedo_core::inherents::ParentBlockInherentDataProvider(parent_block);
+                        <span class="kw">let </span>timestamp = sp_timestamp::InherentDataProvider::from_system_time();
+
+                        <span class="kw">let </span>slot =
+                            sp_consensus_aura::inherents::InherentDataProvider::from_timestamp_and_slot_duration(
+                                <span class="kw-2">*</span>timestamp,
+                                slot_duration,
+                            );
+
+                        <span class="prelude-val">Ok</span>((slot, parent_idp, timestamp))
+                    }
                 },
                 force_authoring,
                 backoff_authoring_blocks,
-                keystore: keystore_container.sync_keystore(),
-                sync_oracle: network.clone(),
-                justification_sync_link: network.clone(),
+                keystore: keystore_container.keystore(),
+                sync_oracle: sync_service.clone(),
+                justification_sync_link: sync_service.clone(),
                 block_proposal_slot_portion: SlotProportion::new(<span class="number">2f32 </span>/ <span class="number">3f32</span>),
                 max_block_proposal_slot_portion: <span class="prelude-val">None</span>,
                 telemetry: telemetry.as_ref().map(|x| x.handle()),
@@ -656,30 +639,27 @@
         // fails we take down the service with it.
         </span>task_manager
             .spawn_essential_handle()
-            .spawn_blocking(<span class="string">&quot;aura&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;block-authoring&quot;</span>), aura);
+            .spawn_blocking(<span class="string">"aura"</span>, <span class="prelude-val">Some</span>(<span class="string">"block-authoring"</span>), aura);
     }
 
-    <span class="comment">// if the node isn&#39;t actively participating in consensus then it doesn&#39;t
-    // need a keystore, regardless of which protocol we use below.
-    </span><span class="kw">let </span>keystore = <span class="kw">if </span>role.is_authority() {
-        <span class="prelude-val">Some</span>(keystore_container.sync_keystore())
-    } <span class="kw">else </span>{
-        <span class="prelude-val">None
-    </span>};
-
-    <span class="kw">let </span>grandpa_config = sc_consensus_grandpa::Config {
-        <span class="comment">// FIXME #1578 make this available through chainspec
-        </span>gossip_duration: Duration::from_millis(<span class="number">333</span>),
-        justification_period: <span class="number">512</span>,
-        name: <span class="prelude-val">Some</span>(name),
-        observer_enabled: <span class="bool-val">false</span>,
-        keystore,
-        local_role: role,
-        telemetry: telemetry.as_ref().map(|x| x.handle()),
-        protocol_name: grandpa_protocol_name,
-    };
-
     <span class="kw">if </span>enable_grandpa {
+        <span class="kw">let </span>keystore = <span class="kw">if </span>role.is_authority() {
+            <span class="prelude-val">Some</span>(keystore_container.keystore())
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>};
+        <span class="kw">let </span>grandpa_config = sc_consensus_grandpa::Config {
+            <span class="comment">// FIXME #1578 make this available through chainspec
+            </span>gossip_duration: Duration::from_millis(<span class="number">333</span>),
+            justification_generation_period: GRANDPA_JUSTIFICATION_PERIOD,
+            name: <span class="prelude-val">Some</span>(name),
+            observer_enabled: <span class="bool-val">false</span>,
+            keystore,
+            local_role: role,
+            telemetry: telemetry.as_ref().map(|x| x.handle()),
+            protocol_name: grandpa_protocol_name,
+        };
+
         <span class="comment">// start the full GRANDPA voter
         // NOTE: non-authorities could run the GRANDPA observer protocol, but at
         // this point the full voter should provide better guarantees of block
@@ -690,16 +670,18 @@
             config: grandpa_config,
             link: grandpa_link,
             network,
+            sync: Arc::new(sync_service),
             voting_rule: sc_consensus_grandpa::VotingRulesBuilder::default().build(),
             prometheus_registry,
             shared_voter_state: SharedVoterState::empty(),
             telemetry: telemetry.as_ref().map(|x| x.handle()),
+            offchain_tx_pool_factory: OffchainTransactionPoolFactory::new(transaction_pool),
         };
 
         <span class="comment">// the GRANDPA voter task is considered infallible, i.e.
         // if it fails we take down the service with it.
         </span>task_manager.spawn_essential_handle().spawn_blocking(
-            <span class="string">&quot;grandpa-voter&quot;</span>,
+            <span class="string">"grandpa-voter"</span>,
             <span class="prelude-val">None</span>,
             sc_consensus_grandpa::run_grandpa_voter(grandpa_config)<span class="question-mark">?</span>,
         );
